@@ -1,4 +1,4 @@
-import { default as createCache } from 'lru-cache';
+import createCache from 'lru-cache';
 
 /*
  * Action types
@@ -20,7 +20,7 @@ export default function fetchrCacheMiddleware(cacheConfig = {}, options = {}) {
 
     const { type, resource, params } = action.payload;
     if (type !== 'read'
-      || excludes && excludes.indexOf(resource) !== -1) {
+      || (excludes && excludes.indexOf(resource) !== -1)) {
       return next(action);
     }
 

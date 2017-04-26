@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import { default as fetchrCacheMiddleware, FETCHR } from '../../src';
+import fetchrCacheMiddleware, { FETCHR } from '../../src';
 
 export const actions = [];
 
