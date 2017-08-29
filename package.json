@@ -1,6 +1,6 @@
 {
   "name": "redux-effects-fetchr-cache",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "caching middleware for redux-effects-fetchr",
   "keywords": [
     "actions",
