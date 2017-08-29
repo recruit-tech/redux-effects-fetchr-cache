@@ -11,7 +11,7 @@ export const FETCHR = 'EFFECT_FETCHR';
 
 export default function fetchrCacheMiddleware(cacheConfig = {}, options = {}) {
   const cache = createCache(cacheConfig);
-  const { excludes, fromCache, toCache } = options;
+  const { excludes, fromCache, toCache, resetCache } = options;
 
   return ({ dispatch, getState }) => (next) => (action) => {
     if (action.type !== FETCHR) {
@@ -19,13 +19,18 @@ export default function fetchrCacheMiddleware(cacheConfig = {}, options = {}) {
     }
 
     const { type, resource, params } = action.payload;
+
+    if (resetCache && resetCache(action, getState())) {
+      cache.reset();
+    }
+
     if (type !== 'read'
       || (excludes && excludes.indexOf(resource) !== -1)) {
       return next(action);
     }
 
     const key = `${resource}@@${JSON.stringify(params)}`;
-    const cachedResult = !fromCache || fromCache(action, getState()) ? cache.get(key) : null;
+    const cachedResult = (!fromCache || fromCache(action, getState())) && cache.get(key);
     if (cachedResult) {
       return Promise.resolve(cachedResult);
     }

@@ -19,6 +19,26 @@ export const fetchUser1Action = {
   },
 };
 
+export const createDiaryAction = {
+  type: FETCHR,
+  payload: {
+    type: 'create',
+    resource: 'diary',
+    params: {
+      title: 'foo',
+      content: 'bar',
+    },
+  },
+};
+
+export const fetchDiaryAction = {
+  type: FETCHR,
+  payload: {
+    type: 'read',
+    resource: 'diary',
+  },
+};
+
 export const fetchProductsAction = {
   type: FETCHR,
   payload: {
