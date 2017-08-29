@@ -71,6 +71,13 @@ Creates redux middleware.
             * `state` *(Object)*: The current state of the Store.
         * Returns:
             * *(Boolean)*: If `true`, saves the obtaining resource to cache.
+    * `resetCache` *(Function)*: reset cache if resetCache function returns true.
+      Defaults `() => false`.
+        * Arguments:
+            * `action` *(Object)*: An action.
+            * `state` *(Object)*: The current state of the Store.
+        * Returns:
+            * *(Boolean)*: If `true`, reset all cache.
 
 ##### Returns
 
