@@ -2,6 +2,7 @@ import { test } from 'eater/runner';
 import assert from 'assert';
 import createDataStore from './fixtures/createDataStore';
 import { createDiaryAction, fetchDiaryAction } from './fixtures/actions';
+import { resetCacheData } from '../src/';
 
 test('resetCache: always false => cache all', () => {
   const resetCache = false;
@@ -23,7 +24,7 @@ test('resetCache: always true => always reset cache', () => {
     store.dispatch(createDiaryAction),
   ]), assert.fail).then((results) => store.dispatch(fetchDiaryAction)
   ).then((result) => {
-    assert.deepStrictEqual(result.payload, 
+    assert.deepStrictEqual(result.payload,
       [{ title: 'foo', content: 'bar' }, { title: 'foo', content: 'bar' }]);
   }, assert.fail);
 });
@@ -36,7 +37,22 @@ test('resetCache: read always uses cache, but create purges the cache result', (
   ).then(
     (result) => store.dispatch(fetchDiaryAction), assert.fail
   ).then(
-    (result) => assert.deepStrictEqual(result.payload, 
+    (result) => assert.deepStrictEqual(result.payload,
+      [{ title: 'foo', content: 'bar' }]), assert.fail
+  );
+});
+
+test('resetAllCache: use exposed resetAllCache function', () => {
+  const store = createDataStore();
+  store.dispatch(fetchDiaryAction).then(
+    (result) => {
+      store.dispatch(createDiaryAction);
+      resetCacheData();
+    }, assert.fail
+  ).then(
+    (result) => store.dispatch(fetchDiaryAction), assert.fail
+  ).then(
+    (result) => assert.deepStrictEqual(result.payload,
       [{ title: 'foo', content: 'bar' }]), assert.fail
   );
 });
