@@ -1,14 +1,27 @@
-import createCache from 'lru-cache';
+import lruCache from 'lru-cache';
 
 /*
  * Action types
  */
 export const FETCHR = 'EFFECT_FETCHR';
 
+let cacheInstance = null;
+
+/*
+ * Factory Method for cache instance (singleton)
+ */
+function createCache(cacheConfig = {}) {
+  if (cacheInstance !== null) {
+    return cacheInstance;
+  }
+
+  cacheInstance = lruCache(cacheConfig);
+  return cacheInstance;
+}
+
 /*
  * Middleware
  */
-
 export default function fetchrCacheMiddleware(cacheConfig = {}, options = {}) {
   const cache = createCache(cacheConfig);
   const { excludes, fromCache, toCache, resetCache } = options;
@@ -43,4 +56,9 @@ export default function fetchrCacheMiddleware(cacheConfig = {}, options = {}) {
       return result;
     });
   };
+}
+
+export function resetCacheData() {
+  const cache = createCache();
+  cache.reset();
 }
