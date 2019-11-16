@@ -31,7 +31,7 @@ export default function fetchrCacheMiddleware(cacheConfig = {}, options = {}) {
       return next(action);
     }
 
-    const { type, resource, params } = action.payload;
+    const { type, resource, params = {} } = action.payload;
 
     if (resetCache && resetCache(action, getState())) {
       cache.reset();
@@ -42,7 +42,7 @@ export default function fetchrCacheMiddleware(cacheConfig = {}, options = {}) {
       return next(action);
     }
 
-    const key = `${resource}@@${JSON.stringify(params)}`;
+    const key = `${resource}@@${JSON.stringify(params, Object.keys(params).sort())}`;
     const cachedResult = (!fromCache || fromCache(action, getState())) && cache.get(key);
     if (cachedResult) {
       return Promise.resolve(cachedResult);
